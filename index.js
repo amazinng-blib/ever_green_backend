@@ -39,9 +39,15 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // todo: routes
 
-const authRoutes = require('./routes/auth-routes');
-app.use('/api/v1', authRoutes);
+const authRoutes = require('./routes/user-routes');
+const contactUsRoutes = require('./routes/contact-us-routes');
+const subscribeToNewsLetterRoutes = require('./routes/subscribe-to-newsLetter-routes');
+const licenseRoutes = require('./routes/license-routes');
 
+app.use('/api/v1', authRoutes);
+app.use('/api/v1', contactUsRoutes);
+app.use('/api/v1', subscribeToNewsLetterRoutes);
+app.use('/api/v1', licenseRoutes);
 // todo: starting express app
 
 const PORT = process.env.PORT || 5060;

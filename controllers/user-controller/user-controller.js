@@ -19,13 +19,15 @@ const register = expressAsyncHandler(async (req, res) => {
   const email = req?.body?.email?.toLowerCase()?.trim();
   const first_name = req?.body?.first_name?.toLowerCase()?.trim();
   const last_name = req?.body?.last_name?.toLowerCase()?.trim();
-  const referal_code = req?.query?.ref_code;
+  const telegram_Id = req?.body?.telegram_Id?.toLowerCase()?.trim();
+  const referal_code = req?.query?.ref;
   const password = req.body.password;
   const phone_number = req.body.phone_number;
   const amount_payed = req?.body?.amount_payed;
   const plan_subscribed = req?.body?.plan_subscribed;
   const payment_status = req?.body?.payment_status;
   const currency = req?.body?.currency;
+  const plan_duration = req?.body?.plan_duration;
 
   try {
     // todo: validate user email
@@ -62,17 +64,21 @@ const register = expressAsyncHandler(async (req, res) => {
       email,
       first_name,
       last_name,
-      telegram_id,
+      telegram_Id,
       phone_number,
       ref_code: userRefCode,
       password: passwordHarsh,
+
       plan: {
         amount_payed,
+        plan_duration,
         plan_subscribed,
         payment_status,
         currency,
       },
     };
+
+    // todo: update users wallet below
 
     const isRefferedByUser = referal_code !== '';
 
@@ -93,6 +99,7 @@ const register = expressAsyncHandler(async (req, res) => {
         commission,
       };
       referral.referrals.push(refObj);
+      referral.earnings += commission;
     }
 
     // todo: create the user
@@ -224,7 +231,15 @@ const getUserById = expressAsyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User Not Found' });
     }
-    const { password, ...userDetails } = user?._doc;
+    const { password, ...otherDetails } = user?._doc;
+    const totalReferrals = user?.referrals?.length;
+    const totalEarnings = user.earnings;
+
+    const userDetails = {
+      totalReferrals,
+      otherDetails,
+      totalEarnings,
+    };
 
     return res.status(200).json({ userDetails });
   } catch (error) {
@@ -277,6 +292,11 @@ const changeProfilePicture = expressAsyncHandler(async (req, res) => {
 
 const updateUserDetails = expressAsyncHandler(async (req, res) => {
   const userId = req?.user?._id;
+  const email = req?.body?.email?.toLowerCase()?.trim();
+  const first_name = req?.body?.first_name?.toLowerCase()?.trim();
+  const last_name = req?.body?.last_name?.toLowerCase()?.trim();
+  const telegram_Id = req?.body?.telegram_Id?.toLowerCase()?.trim();
+  const phone_number = req.body.phone_number;
 
   try {
     const user = await UserModel.findById(userId);
@@ -284,6 +304,44 @@ const updateUserDetails = expressAsyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'User Not Found' });
     }
+
+    user.first_name = first_name;
+    user.last_name = last_name;
+    user.telegram_Id = telegram_Id;
+    user.phone_number = phone_number;
+    user.email = email;
+
+    await user.save();
+
+    const { password, ...userDetails } = user?._doc;
+
+    return res
+      .status(200)
+      .json({ message: 'Updated Successfully', userDetails });
+  } catch (error) {
+    res.status(500).json({ error: error?.message });
+  }
+});
+
+/**
+ * Update User Details
+ *
+ *
+ *
+ */
+
+const fetchAllUsers = expressAsyncHandler(async (req, res) => {
+  try {
+    const users = await UserModel.find({});
+
+    const totalUsers = await UserModel.find({}).countDocuments();
+
+    const user_docs = {
+      users,
+      totalUsers,
+    };
+
+    return res.status(200).json(user_docs);
   } catch (error) {
     res.status(500).json({ error: error?.message });
   }
@@ -296,4 +354,6 @@ module.exports = {
   loginUser,
   getUserById,
   changeProfilePicture,
+  updateUserDetails,
+  fetchAllUsers,
 };

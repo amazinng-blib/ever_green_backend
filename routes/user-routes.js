@@ -6,7 +6,9 @@ const {
   loginUser,
   getUserById,
   changeProfilePicture,
-} = require('../controllers/auth-controller/auth-controller');
+  updateUserDetails,
+  fetchAllUsers,
+} = require('../controllers/user-controller/user-controller');
 const { verifyToken } = require('../utils/handletoken');
 
 const router = require('express').Router();
@@ -22,4 +24,7 @@ router.put(
   upload.array('profile_picture'),
   changeProfilePicture
 );
+
+router.put('/update-user-details', verifyToken, updateUserDetails);
+router.get('/all-users', fetchAllUsers);
 module.exports = router;

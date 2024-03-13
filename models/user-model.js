@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   phone_number: String,
   telegram_Id: String,
-  ref_code: String,
+  ref: String,
   referrals: [
     {
       first_name: { type: String, required: true },
@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
       commission: Number,
     },
   ],
+  earnings: Number,
+  role: {
+    type: String,
+    enum: ['User', 'SuperAdmin'],
+    default: 'User',
+  },
   profile_picture: [
     {
       url: {
@@ -26,8 +32,10 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+
   plan: {
     amount_payed: Number,
+    plan_duration: String,
     plan_subscribed: {
       type: String,
       enum: ['Intro', 'Pro', 'Vip'],

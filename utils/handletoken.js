@@ -1,11 +1,15 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-const generateToken = (user) => {
+const generateToken = (user, expiresIn = '30d') => {
   return jwt.sign(
     {
       _id: user._id,
     },
-    'somesecretethat7889838'
+    process.env.JWT_SECRET,
+    {
+      expiresIn: expiresIn,
+    }
   );
 };
 
@@ -21,7 +25,7 @@ const verifyToken = async (req, res, next) => {
       token = token.slice(7, token.length).trimLeft();
     }
 
-    const verified = jwt.verify(token, 'somesecretethat7889838');
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
     req.user = verified;
 
     next();
