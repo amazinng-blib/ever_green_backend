@@ -7,6 +7,8 @@ const { generateToken } = require('../../utils/handletoken');
 const formatDateToDDMMYY = require('../../utils/date-formatter');
 const getCommission = require('../../utils/commission');
 const cloudinaryUploaderTwo = require('../../utils/cloudinary-uploader-2');
+const registrationSuccessEmail = require('../../email-services/registration-success-email');
+const forgotPasswordEmail = require('../../email-services/forgot-password-email');
 
 /**
  * Register user
@@ -24,10 +26,12 @@ const register = expressAsyncHandler(async (req, res) => {
   const password = req.body.password;
   const phone_number = req.body.phone_number;
   const amount_payed = req?.body?.amount_payed;
-  const plan_subscribed = req?.body?.plan_subscribed;
+  const plan_type = req?.body?.plan_type;
   const payment_status = req?.body?.payment_status;
   const currency = req?.body?.currency;
   const plan_duration = req?.body?.plan_duration;
+  const account_type = req?.body?.account_type;
+  const plan_category = req?.body?.plan_category;
 
   try {
     // todo: validate user email
@@ -66,23 +70,29 @@ const register = expressAsyncHandler(async (req, res) => {
       last_name,
       telegram_Id,
       phone_number,
-      ref_code: userRefCode,
+      ref_code: account_type === 'affiliate' ? userRefCode : null,
       password: passwordHarsh,
+      account_type,
 
       plan: {
         amount_payed,
         plan_duration,
-        plan_subscribed,
+        plan_type,
         payment_status,
         currency,
+        plan_category,
       },
     };
 
     // todo: update users wallet below
 
+    // ---------------------------
+
+    // todo: check if the registration link containa ref code
+
     const isRefferedByUser = referal_code !== '';
 
-    if (isRefferedByUser) {
+    if (isRefferedByUser && account_type === 'personal') {
       // todo: get the user that referrer
       const referral = await UserModel.findOne({ ref_code: referal_code });
       //   todo: create the user
@@ -105,6 +115,11 @@ const register = expressAsyncHandler(async (req, res) => {
     // todo: create the user
     const newUser = new UserModel(userObj);
     await newUser.save();
+
+    const token = generateToken(newUser?._id);
+
+    // todo: send email
+    await registrationSuccessEmail(newUser, token);
 
     return res
       .status(201)
@@ -130,6 +145,15 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'Wrong Credentilas' });
     }
     const token = generateToken(userExist._id);
+    const user = {
+      email,
+      token,
+    };
+
+    const resetLink = `appData.frontendLink/reset-password/${token}`;
+
+    // todo: send email
+    await forgotPasswordEmail(user, resetLink);
 
     // todo: send email
 

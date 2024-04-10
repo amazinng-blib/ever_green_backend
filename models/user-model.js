@@ -3,11 +3,19 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
+  account_type: {
+    type: String,
+    enum: ['affiliate', 'personal'],
+  },
   email: String,
   password: String,
   phone_number: String,
   telegram_Id: String,
   ref: String,
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
   referrals: [
     {
       first_name: { type: String, required: true },
@@ -36,9 +44,14 @@ const userSchema = new mongoose.Schema({
   plan: {
     amount_payed: Number,
     plan_duration: String,
-    plan_subscribed: {
+    plan_category: {
       type: String,
       enum: ['Intro', 'Pro', 'Vip'],
+      default: null,
+    },
+    plan_type: {
+      type: String,
+      enum: ['Single-Account', 'Double-Account'],
       default: null,
     },
     payment_status: {

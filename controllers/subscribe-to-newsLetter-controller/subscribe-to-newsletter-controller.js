@@ -1,5 +1,6 @@
 const expressAsyncHandler = require('express-async-handler');
 const SubscribeToNewsChannelModel = require('../../models/subscribe-to-newsletter-model');
+const newsletterEmail = require('../../email-services/news-letter-email');
 
 /**** SUBSCRIBE TO NEWS CHANNEL
 /**** 
@@ -42,6 +43,7 @@ const postNews = expressAsyncHandler(async (req, res) => {
     const users = subscribers?.map((x) => x?.email);
 
     //   todo: send emails to subscribers
+    await newsletterEmail(users, body, title);
 
     res.status(200).json({ message: 'News Letter sent successfully' });
   } catch (error) {
