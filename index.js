@@ -35,7 +35,7 @@ app.use(
   express.static(path.join(__dirname, 'node_modules', 'swagger-ui-dist'))
 );
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // todo: routes
 
