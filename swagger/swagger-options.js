@@ -9,7 +9,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: 'https://ever-green-backend.onrender.com',
       },
     ],
     securitySchemes: {
