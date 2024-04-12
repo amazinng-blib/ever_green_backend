@@ -24,7 +24,10 @@ const userSchema = new mongoose.Schema({
       commission: Number,
     },
   ],
-  earnings: Number,
+  earnings: {
+    type: Number,
+    default: 0,
+  },
   role: {
     type: String,
     enum: ['User', 'SuperAdmin'],
