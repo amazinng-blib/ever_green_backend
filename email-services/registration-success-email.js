@@ -102,11 +102,25 @@ const registrationSuccessEmail = async (user, token) => {
         <br />
         <br />
         <br />
-        <div style="margin: auto; text-align: center">
-        <a href="${appData.frontendLink}/account-verification-success/${token}" target="_blank"> 
-        <button style="padding: .5rem i.5rem; border-radius: .5rem; background-colour: blue; color: white">Click to verify Your account</button>
+        <div style="margin: 1rem auto; text-align: center">
+        <a
+          href="${appData.frontendLink}/account-verification-success/${token}"
+          target="_blank"
+        >
+          <button
+            style="
+              padding: 1rem 1.2rem;
+              border-radius: 0.5rem;
+              background: blue;
+              cursor: pointer;
+              border: none;
+              color: white;
+            "
+          >
+            Click to verify Your account
+          </button>
         </a>
-        </div>
+      </div>
 
       </main>
 
