@@ -73,7 +73,7 @@ const registrationSuccessEmail = async (user, token) => {
             alt="evergreenfx"
             width="50"
             height="250"
-            style="object-fit: contain; width: 100%; height: 5rem"
+            style="object-fit: contain; width: 50%; height: 5rem"
           
           <span style="font-size: 1.3rem"><b>EVERGREENFX</b></span>
         </a>
