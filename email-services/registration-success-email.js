@@ -73,7 +73,7 @@ const registrationSuccessEmail = async (user, token) => {
             alt="Ernest-prdict"
             width="50"
             height="250"
-            style="object-fit: cover; width: 100%; height: 100%"
+            style="object-fit: contain; width: 100%; height: 5rem"
           
           <span style="font-size: 1.3rem"><b>EVERGREENFX</b></span>
         </a>
@@ -102,8 +102,10 @@ const registrationSuccessEmail = async (user, token) => {
         <br />
         <br />
         <br />
-        <div>
-        <a href="${appData.frontendLink}/account-verification-success/${token}" target="_blank"> Click to verify Your account</a>
+        <div style="margin: auto; text-align: center">
+        <a href="${appData.frontendLink}/account-verification-success/${token}" target="_blank"> 
+        <button style="padding: .5rem i.5rem; border-radius: .5rem; background-colour: blue; color: white">Click to verify Your account</button>
+        </a>
         </div>
 
       </main>
