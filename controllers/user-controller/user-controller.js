@@ -9,6 +9,7 @@ const getCommission = require('../../utils/commission');
 const cloudinaryUploaderTwo = require('../../utils/cloudinary-uploader-2');
 const registrationSuccessEmail = require('../../email-services/registration-success-email');
 const forgotPasswordEmail = require('../../email-services/forgot-password-email');
+const appData = require('../../variables/variables');
 
 /**
  * Register user
