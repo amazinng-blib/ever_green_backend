@@ -9,7 +9,7 @@ const forgotPasswordEmail = async (user, link) => {
       host: 'smpt.gmail.com',
       secure: false,
       auth: {
-        user: process.env.Email,
+        user: process.env.EMAIL,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
