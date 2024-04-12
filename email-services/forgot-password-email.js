@@ -16,7 +16,7 @@ const forgotPasswordEmail = async (user, link) => {
 
     const options = {
       from: process.env.EMAIL,
-      to: `${user?.userExist?.email}`,
+      to: `${user?.email}`,
       subject: 'Reset Passoword',
       html: `
       <!DOCTYPE html>
@@ -95,7 +95,7 @@ const forgotPasswordEmail = async (user, link) => {
       
               <div style="text-align: center; font-size: 1.5rem">
                 <p>
-                  Good day dear valued ${user?.userExist?.first_name}, You can Reset your
+                  Good day dear valued ${user?.first_name}, You can Reset your
                   password by clicking on the button bellow
                 </p>
       
