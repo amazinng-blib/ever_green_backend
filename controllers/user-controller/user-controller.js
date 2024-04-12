@@ -153,7 +153,7 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
       token,
     };
 
-    const resetLink = `appData.frontendLink/reset-password/${token}`;
+    const resetLink = `${appData.frontendLink}/reset-password/${token}`;
 
     // todo: send email
     await forgotPasswordEmail(user, resetLink);
@@ -163,6 +163,7 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
     res.status(200).json({
       message:
         "A password reset Link has been sent to the email and phone number you provided. Check your email inbox but if you can't find it, check your spam folder",
+      resetLink,
     });
   } catch (error) {
     res.status(500).json(error?.message);
