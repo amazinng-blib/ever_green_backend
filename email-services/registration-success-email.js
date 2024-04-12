@@ -69,8 +69,8 @@ const registrationSuccessEmail = async (user, token) => {
           "
         >
         <img
-            src="https://res.cloudinary.com/amazing1917/image/upload/v1682280454/egox1_hsktqz.png"
-            alt="Ernest-prdict"
+            src="https://res.cloudinary.com/amazing1917/image/upload/v1712927536/evergreen_logo_hkvuva.png"
+            alt="evergreenfx"
             width="50"
             height="250"
             style="object-fit: contain; width: 100%; height: 5rem"
