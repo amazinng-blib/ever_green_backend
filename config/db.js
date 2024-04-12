@@ -19,4 +19,5 @@ const connectDB = async () => {
 
 module.exports = connectDB;
 
-// mongodb://0.0.0.0:27017/videoapp
+// mongodb://0.0.0.0:27017/evergreenfx
+// mongodb+srv://nwankwoernest2020:bBHUJ4eBWVq06S2N@cluster0.suwrnl1.mongodb.net/Evergreenfx

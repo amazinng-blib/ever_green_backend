@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
     },
     currency: {
       type: String,
-      enum: ['NGN', 'USD'],
+      enum: ['NGN', 'USD', 'FIAT'],
       default: null,
     },
     has_completed_subscription: {

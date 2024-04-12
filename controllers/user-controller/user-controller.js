@@ -24,14 +24,15 @@ const register = expressAsyncHandler(async (req, res) => {
   const telegram_Id = req?.body?.telegram_Id?.toLowerCase()?.trim();
   const referal_code = req?.query?.ref;
   const password = req.body.password;
-  const phone_number = req.body.phone_number;
-  const amount_payed = req?.body?.amount_payed;
-  const plan_type = req?.body?.plan_type;
-  const payment_status = req?.body?.payment_status;
-  const currency = req?.body?.currency;
-  const plan_duration = req?.body?.plan_duration;
   const account_type = req?.body?.account_type;
-  const plan_category = req?.body?.plan_category;
+
+  const phone_number = req.body.phone_number;
+  const amount_payed = req?.body?.plan?.amount_payed;
+  const plan_type = req?.body?.plan?.plan_type;
+  const payment_status = req?.body?.plan?.payment_status;
+  const currency = req?.body?.plan?.currency;
+  const plan_duration = req?.body?.plan?.plan_duration;
+  const plan_category = req?.body?.plan?.plan_category;
 
   try {
     // todo: validate user email
@@ -88,28 +89,30 @@ const register = expressAsyncHandler(async (req, res) => {
 
     // ---------------------------
 
-    // todo: check if the registration link containa ref code
+    // todo: check if the registration link contain ref code
 
     const isRefferedByUser = referal_code !== '';
 
     if (isRefferedByUser && account_type === 'personal') {
       // todo: get the user that referrer
       const referral = await UserModel.findOne({ ref_code: referal_code });
-      //   todo: create the user
 
-      const currentDate = new Date(Date.now());
+      if (referral) {
+        const currentDate = new Date(Date.now());
 
-      const date_joined = formatDateToDDMMYY(currentDate);
-      const commission = getCommission(plan_subscribed, amount_payed);
+        const date_joined = formatDateToDDMMYY(currentDate);
+        const commission = getCommission(plan_category, amount_payed);
 
-      const refObj = {
-        first_name,
-        last_name,
-        date_joined,
-        commission,
-      };
-      referral.referrals.push(refObj);
-      referral.earnings += commission;
+        const refObj = {
+          first_name,
+          last_name,
+          date_joined,
+          commission,
+        };
+        referral.referrals.push(refObj);
+        referral.earnings += commission;
+        await referral.save();
+      }
     }
 
     // todo: create the user

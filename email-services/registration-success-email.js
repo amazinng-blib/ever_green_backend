@@ -68,14 +68,14 @@ const registrationSuccessEmail = async (user, token) => {
             padding: 1rem;
           "
         >
-          <!-- <img
+        <img
             src="https://res.cloudinary.com/amazing1917/image/upload/v1682280454/egox1_hsktqz.png"
             alt="Ernest-prdict"
             width="50"
             height="250"
             style="object-fit: cover; width: 100%; height: 100%"
-          /> -->
-          ${LOGO} <span style="font-size: 1.3rem"><b>EVERGREENFX</b></span>
+          
+          <span style="font-size: 1.3rem"><b>EVERGREENFX</b></span>
         </a>
       </header>
       <br />
@@ -96,7 +96,7 @@ const registrationSuccessEmail = async (user, token) => {
         <br />
 
         <div style="text-align: center; font-size: 1.5rem">
-          ${mailDetails?.html}
+         <h2>Hello dear</h2>
         </div>
 
         <br />

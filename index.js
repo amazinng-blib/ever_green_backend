@@ -23,6 +23,17 @@ app.use(
   })
 );
 
+app.use(
+  express.json({
+    verify: (req, res, buf) => {
+      const url = req.originalUrl;
+      if (url.startsWith('/api/v1/webhook')) {
+        req.rawBody = buf.toString();
+      }
+    },
+  })
+);
+
 app.use(express.json());
 
 //todo: Serve Swagger UI at /api-docs endpoint
@@ -43,11 +54,15 @@ const authRoutes = require('./routes/user-routes');
 const contactUsRoutes = require('./routes/contact-us-routes');
 const subscribeToNewsLetterRoutes = require('./routes/subscribe-to-newsLetter-routes');
 const licenseRoutes = require('./routes/license-routes');
+const coinBaseRoutes = require('./routes/pay-with-coin');
+const payStackRoutes = require('./routes/paystack-webhook');
 
 app.use('/api/v1', authRoutes);
 app.use('/api/v1', contactUsRoutes);
 app.use('/api/v1', subscribeToNewsLetterRoutes);
 app.use('/api/v1', licenseRoutes);
+app.use('/api/v1', coinBaseRoutes);
+app.use('/api/v1', payStackRoutes);
 // todo: starting express app
 
 const PORT = process.env.PORT || 5060;
