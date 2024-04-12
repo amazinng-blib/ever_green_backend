@@ -300,9 +300,11 @@ const changeProfilePicture = expressAsyncHandler(async (req, res) => {
 
     let files = req?.files;
 
-    const uploadedImageUrl = cloudinaryUploaderTwo(files);
+    if (files) {
+      const uploadedImageUrl = cloudinaryUploaderTwo(files);
 
-    user.profile_picture = uploadedImageUrl;
+      user.profile_picture = uploadedImageUrl;
+    }
 
     await user.save();
 
