@@ -150,7 +150,7 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
     }
     const token = generateToken(userExist._id);
     const user = {
-      email,
+      userExist,
       token,
     };
 
