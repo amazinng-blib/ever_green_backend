@@ -49,35 +49,35 @@ const licenseKeyRequestEmail = async (
         padding: 50px 20px;
       "
     >
-      <header
-        style="
-          background-color: rgb(175, 167, 167);
-          padding-top: 1rem;
-          padding-bottom: 1rem;
-        "
-      >
-        <a
-          href="https://evergreenfx.com"
-          style="
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: auto;
-            width: 100%;
-            text-decoration: none;
-            padding: 1rem;
-          "
-        >
-          <!-- <img
-                    src="https://res.cloudinary.com/amazing1917/image/upload/v1682280454/egox1_hsktqz.png"
-                    alt="Ernest-prdict"
-                    width="50"
-                    height="250"
-                    style="object-fit: cover; width: 100%; height: 100%"
-                  /> -->
-          ${LOGO} <span style="font-size: 1.3rem"><b>EVERGREENFX</b></span>
-        </a>
-      </header>
+    <header
+    style="
+      background-color: rgb(175, 167, 167);
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    "
+  >
+    <a
+      href="https://evergreenfx.com"
+      style="
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: auto;
+        width: 100%;
+        text-decoration: none;
+        padding: 1rem;
+      "
+    >
+    <img
+        src="https://res.cloudinary.com/amazing1917/image/upload/v1712927536/evergreen_logo_hkvuva.png"
+        alt="evergreenfx"
+        width="50"
+        height="250"
+        style="object-fit: contain; width: 50%; height: 5rem"
+      
+      <span style="font-size: 1.3rem"><b>EVERGREENFX</b></span>
+    </a>
+  </header>
       <br />
 
       <main
