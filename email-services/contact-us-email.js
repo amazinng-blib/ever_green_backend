@@ -85,7 +85,7 @@ const contactUsEmail = async (name, email, phone_number, subject, message) => {
         "
       >
         <h1 style="text-align: center; font-size: 1.2rem; font-weight: 400">
-          NEWS LETTER
+          ${subject}
         </h1>
 
         <br />
