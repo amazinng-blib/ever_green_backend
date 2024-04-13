@@ -81,9 +81,9 @@ const assignLicenseKey = expressAsyncHandler(async (req, res) => {
 
     const amount = userToAssignLicenseKey?.plan?.amount_payed;
 
-    const isAdmin = loggedInUser?.role === 'SuperAdmin';
+    const isUSer = loggedInUser?.role === 'User';
 
-    if (!isAdmin) {
+    if (isUser) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
