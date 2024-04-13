@@ -15,6 +15,8 @@ const hasPlanExpired = require('../../utils/check-plan-validity');
 const requestForLicenseKey = expressAsyncHandler(async (req, res) => {
   const userId = req?.user?._id;
   const { trading_Id } = req?.body;
+  const userObjectId = new mongoose.Types.ObjectId(userId);
+
   try {
     // todo: check if the user exist
     const userExist = await UserModel.findById(userId);
@@ -24,7 +26,6 @@ const requestForLicenseKey = expressAsyncHandler(async (req, res) => {
     }
 
     // todo: check if he has any active license key running
-    const userObjectId = mongoose.Types.ObjectId(userId);
 
     const licenses = await LicenseModel.find({ user_id: userObjectId });
     const lastLicenseIndex = licenses?.length - 1;
