@@ -145,6 +145,10 @@ const toggleLicenseKeyStatusToExpired = expressAsyncHandler(
         return res
           .status(200)
           .json({ message: 'License Key toggled to expired' });
+      } else {
+        return res
+          .status(400)
+          .json({ message: 'This User License is still active' });
       }
     } catch (error) {
       res.status(500).json({ error: error?.message });
