@@ -6,7 +6,7 @@ const licenseSchema = new mongoose.Schema(
     user_id: { type: Schema.Types.ObjectId, ref: 'User' },
     license_key: String,
     trading_Id: String,
-    date_purchased: Date,
+    date_purchased: { type: String },
     amount: Number,
     status: {
       type: String,
