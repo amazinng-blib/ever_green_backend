@@ -15,7 +15,7 @@ const payStackWebhook = expressAsyncHandler(async (req, res) => {
       .createHmac(
         'sha512',
         process.env.PAYSTACK_SECRETE ||
-          'sk_live_a569942aca9b1a659410822f9c5955ade52756a0'
+          'sk_test_b8f838701c2bf5203ff6dd5e14999de634201ae8'
       )
       .update(JSON.stringify(req.body))
       .digest('hex');
@@ -40,8 +40,8 @@ const payStackWebhook = expressAsyncHandler(async (req, res) => {
         // todo: if not, create the user , else, send email
 
         const userExist = await UserModel.find({
-          first_name: { $regex: new RegExp('^' + first_name, 'i') },
-          last_name: { $regex: new RegExp('^' + last_name, 'i') },
+          first_name: first_name,
+          last_name: last_name,
         });
 
         const token = generateToken(userExist?._id);
