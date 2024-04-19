@@ -17,7 +17,7 @@ const productionOrigin = ['https://ever-green-backend.onrender.com'];
 app.use(
   cors({
     origin:
-      process.env.NODE_ENV === 'development'
+      process.env.NODE_ENV === 'production'
         ? productionOrigin
         : developmentOrigin,
   })
