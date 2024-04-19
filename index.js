@@ -12,7 +12,7 @@ db();
 //todo: cors config
 
 const developmentOrigin = 'http://localhost:3000';
-const productionOrigin = ['https://backend-interview-test.vercel.app'];
+const productionOrigin = ['https://ever-green-backend.onrender.com'];
 
 app.use(
   cors({
