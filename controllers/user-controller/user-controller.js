@@ -1,12 +1,13 @@
 const expressAsyncHandler = require('express-async-handler');
-const UserModel = require('../../models/user-model');
-const generateUniqueCode = require('../../utils/generateReferralCode');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
+const { default: axios } = require('axios');
+
+const UserModel = require('../../models/user-model');
+const generateUniqueCode = require('../../utils/generateReferralCode');
 const { generateToken } = require('../../utils/handletoken');
 const formatDateToDDMMYY = require('../../utils/date-formatter');
 const getCommission = require('../../utils/commission');
-// const cloudinaryUploaderTwo = require('../../utils/cloudinary-uploader-2');
 const registrationSuccessEmail = require('../../email-services/registration-success-email');
 const forgotPasswordEmail = require('../../email-services/forgot-password-email');
 const appData = require('../../variables/variables');
