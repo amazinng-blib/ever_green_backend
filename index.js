@@ -11,18 +11,19 @@ db();
 
 //todo: cors config
 
-const developmentOrigin = 'http://localhost:3000';
-const productionOrigin = 'https://ever-green-backend.onrender.com';
+// const developmentOrigin = 'http://localhost:3000';
+// const productionOrigin = 'https://ever-green-backend.onrender.com';
 
-app.use(
-  cors({
-    origin:
-      process.env.NODE_ENV === 'production'
-        ? productionOrigin
-        : developmentOrigin,
-  })
-);
+// app.use(
+//   cors({
+//     origin:
+//       process.env.NODE_ENV === 'production'
+//         ? productionOrigin
+//         : developmentOrigin,
+//   })
+// );
 
+app.use(cors());
 app.use(
   express.json({
     verify: (req, res, buf) => {
