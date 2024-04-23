@@ -2,6 +2,7 @@ const expressAsyncHandler = require('express-async-handler');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const { default: axios } = require('axios');
+require('dotenv').config();
 
 const UserModel = require('../../models/user-model');
 const generateUniqueCode = require('../../utils/generateReferralCode');
