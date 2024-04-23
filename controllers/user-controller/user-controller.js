@@ -44,7 +44,7 @@ const register = expressAsyncHandler(async (req, res) => {
       `https://api.paystack.co/transaction/verify/${reference_number}`,
       {
         headers: {
-          Authorization: `Bearer ${PAYSTACK_SECRET_KEY} || sk_test_b8f838701c2bf5203ff6dd5e14999de634201ae8`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY} || sk_test_b8f838701c2bf5203ff6dd5e14999de634201ae8`,
         },
       }
     );
