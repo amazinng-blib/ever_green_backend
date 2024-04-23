@@ -35,8 +35,39 @@ const register = expressAsyncHandler(async (req, res) => {
   const currency = req?.body?.plan?.currency;
   const plan_duration = req?.body?.plan?.plan_duration;
   const plan_category = req?.body?.plan?.plan_category;
+  const reference_number = req?.body?.reference_number;
 
   try {
+    // todo: verify payment
+    const { data } = await axios.get(
+      `https://api.paystack.co/transaction/verify/${reference_number}`,
+      {
+        headers: {
+          Authorization: `Bearer ${PAYSTACK_SECRET_KEY} || sk_test_b8f838701c2bf5203ff6dd5e14999de634201ae8`,
+        },
+      }
+    );
+
+    if (data && data?.status !== success) {
+      return res.status(400).json({ message: 'Payment not verified' });
+    }
+
+    if (currency === 'NGN') {
+      const paystackAmount = Number(data?.amount / 100);
+
+      if (Number(amount) !== paystackAmount) {
+        return res.status(400).json({ message: 'Invalid amount paid' });
+      }
+    }
+
+    if (currency === 'USD') {
+      const paystackAmount = Number(data?.amount);
+
+      if (Number(amount) !== paystackAmount) {
+        return res.status(400).json({ message: 'Invalid amount paid' });
+      }
+    }
+
     // todo: validate user email
 
     if (!validator.isEmail(email)) {
