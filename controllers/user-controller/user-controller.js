@@ -50,11 +50,11 @@ const register = expressAsyncHandler(async (req, res) => {
       }
     );
 
-    if (data && data?.status !== success) {
+    if (data && data?.status !== 'success') {
       return res.status(400).json({ message: 'Payment not verified' });
     }
 
-    if (currency === 'NGN') {
+    if (data?.currency === 'NGN') {
       const paystackAmount = Number(data?.amount / 100);
 
       if (Number(amount) !== paystackAmount) {
