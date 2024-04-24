@@ -39,12 +39,25 @@ const register = expressAsyncHandler(async (req, res) => {
   const plan_category = req?.body?.plan?.plan_category;
   const reference_number = req?.body?.reference_number;
 
+  if (
+    !email &&
+    !first_name &&
+    !last_name &&
+    !account_type &&
+    !phone_number &&
+    !plan_type &&
+    !plan_category
+  ) {
+    return res.status(400).json({ message: 'All Fields are required' });
+  }
+
+  if (!reference_number) {
+    return res.status(400).json({ message: 'Reference Number is required' });
+  }
+
   try {
     // todo: verify payment
 
-    if (!reference_number) {
-      return res.status(400).json({ message: 'Reference Number is required' });
-    }
     const { data } = await axios.get(
       `https://api.paystack.co/transaction/verify/${reference_number}`,
       {
@@ -53,22 +66,6 @@ const register = expressAsyncHandler(async (req, res) => {
         },
       }
     );
-
-    if (data?.data?.status) {
-      if (
-        !email &&
-        !first_name &&
-        !last_name &&
-        !account_type &&
-        !phone_number &&
-        !plan_type &&
-        !plan_category
-      ) {
-        return res.status(400).json({ message: 'All Fields are required' });
-      }
-    }
-
-    // console.log({ data });
 
     if (data && data?.data?.status !== 'success') {
       return res.status(400).json({ message: 'Payment not verified' });
