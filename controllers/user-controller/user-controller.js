@@ -39,26 +39,14 @@ const register = expressAsyncHandler(async (req, res) => {
   const plan_category = req?.body?.plan?.plan_category;
   const reference_number = req?.body?.reference_number;
 
-  if (
-    !email &&
-    !first_name &&
-    !last_name &&
-    !account_type &&
-    !phone_number &&
-    !plan_type &&
-    !plan_category
-  ) {
-    return res.status(400).json({ message: 'All Fields are required' });
-  }
-
   if (!reference_number) {
-    return res.status(400).json({ message: 'Reference Number is required' });
+    return res.status(400).json({ message: 'reference_number is required' });
   }
 
+  // todo: verify payment
+  let data;
   try {
-    // todo: verify payment
-
-    const { data } = await axios.get(
+    data = await axios.get(
       `https://api.paystack.co/transaction/verify/${reference_number}`,
       {
         headers: {
@@ -67,12 +55,24 @@ const register = expressAsyncHandler(async (req, res) => {
       }
     );
 
-    if (data && data?.data?.status !== 'success') {
-      return res.status(400).json({ message: 'Payment not verified' });
+    const metadata = data?.data?.data?.metadata;
+    const metaDataEmail = metadata?.email;
+    if (metaDataEmail !== email) {
+      return res.status(400).json({ message: 'Invalid User' });
     }
+  } catch (error) {
+    if (error) {
+      return res.status(400).json({ message: 'Invalid Reference Number' });
+    }
+  }
 
-    if (data?.currency === 'NGN') {
-      const paystackAmount = Number(data?.amount / 100);
+  if (data && data?.data?.data.status !== 'success') {
+    return res.status(400).json({ message: 'Payment not verified' });
+  }
+
+  try {
+    if (data?.data.currency === 'NGN') {
+      const paystackAmount = Number(data?.data.amount / 100);
 
       if (Number(amount) !== paystackAmount) {
         return res.status(400).json({ message: 'Invalid amount paid' });
@@ -80,7 +80,7 @@ const register = expressAsyncHandler(async (req, res) => {
     }
 
     if (currency === 'USD') {
-      const paystackAmount = Number(data?.amount);
+      const paystackAmount = Number(data?.data?.amount);
 
       if (Number(amount) !== paystackAmount) {
         return res.status(400).json({ message: 'Invalid amount paid' });
