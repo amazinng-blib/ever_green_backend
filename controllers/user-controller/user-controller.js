@@ -50,7 +50,7 @@ const register = expressAsyncHandler(async (req, res) => {
       }
     );
 
-    console.log({ data });
+    // console.log({ data });
 
     if (data && data?.data?.status !== 'success') {
       return res.status(400).json({ message: 'Payment not verified' });
