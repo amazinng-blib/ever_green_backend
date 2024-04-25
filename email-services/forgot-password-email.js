@@ -101,7 +101,7 @@ const forgotPasswordEmail = async (user, link) => {
       
                 <div>
                 <a
-                href="${appData.frontendLink}/reset-password/${user.token}"
+                href="${appData.frontendLink}/reset-password?token=${user.token}"
                 target="_blank"
               >
 

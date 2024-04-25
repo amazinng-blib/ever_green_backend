@@ -104,7 +104,7 @@ const registrationSuccessEmail = async (user, token) => {
         <br />
         <div style="margin: 1rem auto; text-align: center">
         <a
-          href="${appData.frontendLink}/account-verification-success/${token}"
+          href="${appData.frontendLink}/account-verification-success?token=${token}"
           target="_blank"
         >
           <button

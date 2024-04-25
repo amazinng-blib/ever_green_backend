@@ -54,11 +54,31 @@ const register = expressAsyncHandler(async (req, res) => {
         },
       }
     );
+    if (data && data?.data?.data.status !== 'success') {
+      return res.status(400).json({ message: 'Payment not verified' });
+    }
 
     const metadata = data?.data?.data?.metadata;
     const metaDataEmail = metadata?.email;
     if (metaDataEmail !== email) {
       return res.status(400).json({ message: 'Invalid User' });
+    }
+
+    if (data?.data?.data.currency === 'NGN') {
+      const paystackAmount = Number(data?.data?.data?.amount / 100);
+      console.log({ paystackAmount });
+
+      if (Number(amount_payed) !== paystackAmount) {
+        return res.status(400).json({ message: 'Invalid amount paid' });
+      }
+    }
+
+    if (data?.data.data.currency === 'USD') {
+      const paystackAmount = Number(data?.data?.data.amount);
+
+      if (Number(amount_payed) !== paystackAmount) {
+        return res.status(400).json({ message: 'Invalid amount paid' });
+      }
     }
   } catch (error) {
     if (error) {
@@ -66,27 +86,7 @@ const register = expressAsyncHandler(async (req, res) => {
     }
   }
 
-  if (data && data?.data?.data.status !== 'success') {
-    return res.status(400).json({ message: 'Payment not verified' });
-  }
-
   try {
-    if (data?.data.currency === 'NGN') {
-      const paystackAmount = Number(data?.data.amount / 100);
-
-      if (Number(amount) !== paystackAmount) {
-        return res.status(400).json({ message: 'Invalid amount paid' });
-      }
-    }
-
-    if (currency === 'USD') {
-      const paystackAmount = Number(data?.data?.amount);
-
-      if (Number(amount) !== paystackAmount) {
-        return res.status(400).json({ message: 'Invalid amount paid' });
-      }
-    }
-
     // todo: validate user email
 
     if (!validator.isEmail(email)) {
