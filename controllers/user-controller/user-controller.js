@@ -46,38 +46,40 @@ const register = expressAsyncHandler(async (req, res) => {
   // todo: verify payment
   let data;
   try {
-    data = await axios.get(
-      `https://api.paystack.co/transaction/verify/${reference_number}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY} || sk_test_b8f838701c2bf5203ff6dd5e14999de634201ae8`,
-        },
+    if (account_type === 'personal') {
+      data = await axios.get(
+        `https://api.paystack.co/transaction/verify/${reference_number}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY} || sk_test_b8f838701c2bf5203ff6dd5e14999de634201ae8`,
+          },
+        }
+      );
+      if (data && data?.data?.data.status !== 'success') {
+        return res.status(400).json({ message: 'Payment not verified' });
       }
-    );
-    if (data && data?.data?.data.status !== 'success') {
-      return res.status(400).json({ message: 'Payment not verified' });
-    }
 
-    const metadata = data?.data?.data?.metadata;
-    const metaDataEmail = metadata?.email;
-    if (metaDataEmail !== email) {
-      return res.status(400).json({ message: 'Invalid User' });
-    }
-
-    if (data?.data?.data.currency === 'NGN') {
-      const paystackAmount = Number(data?.data?.data?.amount / 100);
-      console.log({ paystackAmount });
-
-      if (Number(amount_payed) !== paystackAmount) {
-        return res.status(400).json({ message: 'Invalid amount paid' });
+      const metadata = data?.data?.data?.metadata;
+      const metaDataEmail = metadata?.email;
+      if (metaDataEmail !== email) {
+        return res.status(400).json({ message: 'Invalid User' });
       }
-    }
 
-    if (data?.data.data.currency === 'USD') {
-      const paystackAmount = Number(data?.data?.data.amount);
+      if (data?.data?.data.currency === 'NGN') {
+        const paystackAmount = Number(data?.data?.data?.amount / 100);
+        console.log({ paystackAmount });
 
-      if (Number(amount_payed) !== paystackAmount) {
-        return res.status(400).json({ message: 'Invalid amount paid' });
+        if (Number(amount_payed) !== paystackAmount) {
+          return res.status(400).json({ message: 'Invalid amount paid' });
+        }
+      }
+
+      if (data?.data.data.currency === 'USD') {
+        const paystackAmount = Number(data?.data?.data.amount);
+
+        if (Number(amount_payed) !== paystackAmount) {
+          return res.status(400).json({ message: 'Invalid amount paid' });
+        }
       }
     }
   } catch (error) {
@@ -91,12 +93,6 @@ const register = expressAsyncHandler(async (req, res) => {
 
     if (!validator.isEmail(email)) {
       return res.status(400).json({ message: 'Email must be a valid email' });
-    }
-
-    if (payment_status !== 'SUCCESS') {
-      return res
-        .status(400)
-        .json({ message: 'Please purchase a plan to continue' });
     }
 
     // todo: check if user exist
