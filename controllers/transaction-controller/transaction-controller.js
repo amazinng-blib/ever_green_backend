@@ -3,7 +3,7 @@ const { UserModel } = require('../../models/user-model');
 const WalletModel = require('../../models/wallet-model');
 const TransactionModel = require('../../models/transactions-model');
 
-const requestForWithdrawal = expressAsyncHandler(async () => {
+const requestForWithdrawal = expressAsyncHandler(async (req, res) => {
   const userId = req?.user?._id;
   const { amount_to_withdraw } = req.body;
   try {
