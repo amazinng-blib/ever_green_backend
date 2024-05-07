@@ -47,6 +47,24 @@ const requestForWithdrawal = expressAsyncHandler(async (req, res) => {
   }
 });
 
+const submitWalletAddress = expressAsyncHandler(async (req, res) => {
+  const userId = req?.user?._id;
+  const { wallet_address } = req?.body;
+  try {
+    const userWallet = await WalletModel.findOne({ user_id: userId });
+    if (!userWallet) {
+      return res.status(404).json({ message: 'Wallet Not found' });
+    }
+
+    userWallet.wallet_address = wallet_address;
+
+    await userWallet.save();
+    res.status(200).json({ message: 'Wallet Saved' });
+  } catch (error) {
+    res.status(500).json(error?.message);
+  }
+});
+
 const respondToWithdrawalRequest = expressAsyncHandler(async (req, res) => {
   const adminId = req?.user?._id;
   const { userId, amount_to_withdraw, transactionId } = req.body;
@@ -106,4 +124,5 @@ module.exports = {
   requestForWithdrawal,
   respondToWithdrawalRequest,
   getAllWithdrawalRequest,
+  submitWalletAddress,
 };
