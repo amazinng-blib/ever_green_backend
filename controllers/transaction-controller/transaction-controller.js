@@ -82,7 +82,7 @@ const respondToWithdrawalRequest = expressAsyncHandler(async (req, res) => {
     const remainingEarnings = Number(userEarnings) - amount_to_withdraw;
 
     const userWallet = await WalletModel.findOne({ user_id: userId });
-    const ledger_balance = userWallet?.ledger_balance;
+    let ledger_balance = userWallet?.ledger_balance;
     ledger_balance = remainingEarnings;
 
     await userWallet.save();
