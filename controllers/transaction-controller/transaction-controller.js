@@ -67,7 +67,7 @@ const submitWalletAddress = expressAsyncHandler(async (req, res) => {
 
 const respondToWithdrawalRequest = expressAsyncHandler(async (req, res) => {
   const adminId = req?.user?._id;
-  const { userId, amount_to_withdraw, transactionId } = req.body;
+  const { userId, amount_to_withdraw } = req.body;
 
   try {
     const admin = await UserModel.findById(adminId);
@@ -87,10 +87,10 @@ const respondToWithdrawalRequest = expressAsyncHandler(async (req, res) => {
 
     await userWallet.save();
 
-    const transaction = await TransactionModel.findById(transactionId);
+    const transaction = await TransactionModel.findOne({ user: userId });
     transaction.status = 'success';
     await transaction.save();
-    res.status(200).json({ message: 'Action completed', Transaction });
+    res.status(200).json({ message: 'Action completed', transaction });
   } catch (error) {
     res.status(500).json(error?.message);
   }
