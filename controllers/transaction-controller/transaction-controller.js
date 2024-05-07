@@ -91,9 +91,8 @@ const respondToWithdrawalRequest = expressAsyncHandler(async (req, res) => {
     if (transaction) {
       transaction.status = 'success';
       await transaction.save();
+      res.status(200).json({ message: 'Action completed', transaction });
     }
-
-    res.status(200).json({ message: 'Action completed', transaction });
   } catch (error) {
     res.status(500).json(error?.message);
   }
