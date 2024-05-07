@@ -88,11 +88,12 @@ const respondToWithdrawalRequest = expressAsyncHandler(async (req, res) => {
     await userWallet.save();
 
     const transaction = await TransactionModel.findOne({ user: userId });
-    if (transaction) {
-      transaction.status = 'success';
-      await transaction.save();
-      res.status(200).json({ message: 'Action completed', transaction });
+    if (!transaction) {
+      return res.status(404).json({ message: 'Transaction not found' });
     }
+    transaction.status = 'success';
+    await transaction.save();
+    res.status(200).json({ message: 'Action completed', transaction });
   } catch (error) {
     res.status(500).json(error?.message);
   }
