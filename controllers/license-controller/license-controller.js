@@ -4,6 +4,7 @@ const LicenseModel = require('../../models/license-model');
 const { default: mongoose } = require('mongoose');
 const formatDateToDDMMYY = require('../../utils/date-formatter');
 const hasPlanExpired = require('../../utils/check-plan-validity');
+const PlanModel = require('../../models/plan-model');
 
 /*
  **Request for license Key
@@ -25,6 +26,26 @@ const requestForLicenseKey = expressAsyncHandler(async (req, res) => {
       return res.status(404).json({ message: 'User Not Found' });
     }
 
+    const userPlan = await PlanModel.find({ subscriber: userId });
+
+    if (userPlan) {
+      const singleAccount = userPlan?.account_type === 'Single-Account';
+      const doubleAccount = userPlan?.account_type === 'Double-Account';
+      const tradingIDLength = trading_Id?.length;
+
+      if ((singleAccount && tradingIDLength < 1) || tradingIDLength > 1) {
+        return res
+          .status(400)
+          .json({ message: 'One trading ID is required in this account' });
+      }
+
+      if ((doubleAccount && tradingIDLength < 2) || tradingIDLength > 2) {
+        return res
+          .status(400)
+          .json({ message: 'Two trading ID is Required in this account' });
+      }
+    }
+
     // todo: check if he has any active license key running
 
     const licenses = await LicenseModel.find({ user_id: userObjectId });
@@ -32,7 +53,7 @@ const requestForLicenseKey = expressAsyncHandler(async (req, res) => {
     const recentSubScribedLicense = licenses[lastLicenseIndex];
     const isActive = recentSubScribedLicense?.status === 'active';
 
-    if (licenses !== undefined && isActive) {
+    if (isActive) {
       return res
         .status(400)
         .json({ message: 'You still have active license running' });
@@ -156,8 +177,24 @@ const toggleLicenseKeyStatusToExpired = expressAsyncHandler(
   }
 );
 
+const getUserLicenses = expressAsyncHandler(async (req, res) => {
+  const userId = req?.user?._id;
+
+  try {
+    const userLicenses = await LicenseModel.find({ user_id: userId });
+    if (!userLicenses?.length) {
+      return res.status(200).json({ message: 'No License Found' });
+    }
+
+    res.status(200).json(userLicenses);
+  } catch (error) {
+    res.status(500).json({ error: error?.message });
+  }
+});
+
 module.exports = {
   requestForLicenseKey,
   assignLicenseKey,
   toggleLicenseKeyStatusToExpired,
+  getUserLicenses,
 };

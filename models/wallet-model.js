@@ -5,16 +5,10 @@ const walletSchema = new mongoose.Schema(
   {
     user_id: { type: Schema.Types.ObjectId, ref: 'User' },
 
-    bank_info: {
-      bank_id: String,
-      bank_name: String,
-      account_type: String,
-      account_name: String,
-      account_number: String,
-    },
-
-    available_balance: Number,
-    ledger_balance: Number,
+    wallet_address: String,
+    wallet: { type: String, enum: ['USDT', 'BNB', 'ETH'], default: null },
+    withdrawable_balance: { type: Number, default: 0 },
+    ledger_balance: { type: Number, default: 0 },
   },
 
   { timestamps: true }

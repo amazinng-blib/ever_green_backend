@@ -57,6 +57,9 @@ const subscribeToNewsLetterRoutes = require('./routes/subscribe-to-newsLetter-ro
 const licenseRoutes = require('./routes/license-routes');
 const coinBaseRoutes = require('./routes/pay-with-coin');
 const payStackRoutes = require('./routes/paystack-webhook');
+const botLinkRoutes = require('./routes/bot-link-routes');
+const transactionRoutes = require('./routes/transaction-routes');
+const subscriptionsRoutes = require('./routes/subcription-routes');
 
 app.use('/api/v1', authRoutes);
 app.use('/api/v1', contactUsRoutes);
@@ -64,6 +67,9 @@ app.use('/api/v1', subscribeToNewsLetterRoutes);
 app.use('/api/v1', licenseRoutes);
 app.use('/api/v1', coinBaseRoutes);
 app.use('/api/v1', payStackRoutes);
+app.use('/api/v1/', botLinkRoutes);
+app.use('/api/v1/', transactionRoutes);
+app.use('/api/v1/', subscriptionsRoutes);
 // todo: starting express app
 
 const PORT = process.env.PORT || 5060;
