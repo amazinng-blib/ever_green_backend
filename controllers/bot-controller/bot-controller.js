@@ -2,7 +2,7 @@ const expressAsyncHandler = require('express-async-handler');
 const { UserModel } = require('../../models/user-model');
 const BotModel = require('../../models/bot-model');
 
-const saveBotLink = expressAsyncHandler(async () => {
+const saveBotLink = expressAsyncHandler(async (req, res) => {
   const userId = req?.user?._id;
   const bot_link = req?.body?.bot_link;
   try {

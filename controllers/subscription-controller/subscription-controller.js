@@ -196,7 +196,7 @@ const upgradePlan = expressAsyncHandler(async (req, res) => {
   }
 });
 
-const subscriptionCompleted = expressAsyncHandler(async () => {
+const subscriptionCompleted = expressAsyncHandler(async (req, res) => {
   const subscriptionId = req?.body?.subscriptionId;
   try {
     const userSub = await PlanModel.findById(subscriptionId);
@@ -214,7 +214,7 @@ const subscriptionCompleted = expressAsyncHandler(async () => {
   }
 });
 
-const allSubscriptions = expressAsyncHandler(async () => {
+const allSubscriptions = expressAsyncHandler(async (req, res) => {
   try {
     const subscriptions = await PlanModel.find({});
     if (!subscriptions) {

@@ -529,7 +529,6 @@ module.exports = {
   resetPassword,
   loginUser,
   getUserById,
-
   changeProfile,
   updateUserDetails,
   fetchAllUsers,
