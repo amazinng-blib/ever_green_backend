@@ -129,7 +129,7 @@ const upgradePlan = expressAsyncHandler(async (req, res) => {
   } = req?.body;
 
   try {
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(userId);
 
     data = await axios.get(
       `https://api.paystack.co/transaction/verify/${reference_number}`,

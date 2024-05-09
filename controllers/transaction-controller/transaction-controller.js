@@ -8,7 +8,6 @@ const requestForWithdrawal = expressAsyncHandler(async (req, res) => {
   const { amount_to_withdraw } = req.body;
   try {
     const userWallet = await WalletModel.findOne({ user_id: userId });
-    const withdrawable_balance = userWallet?.withdrawable_balance;
 
     const userWalletAddress = userWallet?.wallet_address;
 
