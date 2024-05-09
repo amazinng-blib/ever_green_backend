@@ -67,9 +67,9 @@ app.use('/api/v1', subscribeToNewsLetterRoutes);
 app.use('/api/v1', licenseRoutes);
 app.use('/api/v1', coinBaseRoutes);
 app.use('/api/v1', payStackRoutes);
-app.use('/api/v1/', botLinkRoutes);
-app.use('/api/v1/', transactionRoutes);
-app.use('/api/v1/', subscriptionsRoutes);
+app.use('/api/v1', botLinkRoutes);
+app.use('/api/v1', transactionRoutes);
+app.use('/api/v1', subscriptionsRoutes);
 // todo: starting express app
 
 const PORT = process.env.PORT || 5060;
